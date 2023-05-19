@@ -9,6 +9,7 @@
     "prefer-template": 1,
     "no-empty": 1,
     "jsx-a11y/alt-text": 0,
+    "no-useless-constructor": 0,
     "prettier/prettier": 1
   }
 }

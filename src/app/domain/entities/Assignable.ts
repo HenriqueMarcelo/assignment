@@ -2,7 +2,7 @@ import { Entity } from './Entity'
 
 interface AssignableProps {
   name: string
-  possibleTasksIds: string[]
+  tasksIds: string[]
 }
 
 export class Assignable extends Entity<AssignableProps> {
@@ -14,12 +14,12 @@ export class Assignable extends Entity<AssignableProps> {
     this.props.name = name
   }
 
-  get possibleTasksIds() {
-    return this.props.possibleTasksIds
+  get tasksIds() {
+    return this.props.tasksIds
   }
 
-  set possibleTasksIds(possibleTasksIds) {
-    this.props.possibleTasksIds = possibleTasksIds
+  set tasksIds(tasksIds) {
+    this.props.tasksIds = tasksIds
   }
 
   static create(props: AssignableProps, id?: string) {
