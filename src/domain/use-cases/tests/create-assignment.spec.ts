@@ -1,20 +1,11 @@
 import { beforeAll, expect, it } from 'vitest'
 import { CreateAssignmentUseCase } from '../create-assignment'
 import { InMemoryAssignmentRepository } from './in-memory-assignment-repository'
-import { InMemoryAssignableRepository } from './in-memory-assignable-repository'
 
 let inMemoryAssignmentRepository: InMemoryAssignmentRepository
 let sut: CreateAssignmentUseCase
 
 beforeAll(() => {
-  console.log(
-    'InMemoryAssignmentRepository',
-    typeof InMemoryAssignmentRepository,
-  )
-  console.log(
-    'InMemoryAssignableRepository',
-    typeof InMemoryAssignableRepository,
-  )
   inMemoryAssignmentRepository = new InMemoryAssignmentRepository()
   sut = new CreateAssignmentUseCase(inMemoryAssignmentRepository)
 })

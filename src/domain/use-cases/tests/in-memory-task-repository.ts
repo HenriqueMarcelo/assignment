@@ -7,4 +7,8 @@ export class InMemoryTaskRepository implements TaskRepository {
   async create(task: Task) {
     this.items.push(task)
   }
+
+  async list() {
+    return this.items
+  }
 }
