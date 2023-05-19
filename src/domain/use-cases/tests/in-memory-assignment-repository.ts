@@ -7,4 +7,29 @@ export class InMemoryAssignmentRepository implements AssignmentRepository {
   async create(assignment: Assignment) {
     this.items.push(assignment)
   }
+
+  async list() {
+    return this.items
+  }
+
+  async findById(id: string) {
+    const assignment = this.items.find((item) => item.id.toString() === id)
+
+    if (!assignment) {
+      return null
+    }
+
+    return assignment
+  }
+
+  async delete(assignment: Assignment) {
+    const itemIndex = this.items.findIndex((item) => item.id === assignment.id)
+    this.items.splice(itemIndex, 1)
+  }
+
+  async save(assignment: Assignment) {
+    const itemIndex = this.items.findIndex((item) => item.id === assignment.id)
+
+    this.items[itemIndex] = assignment
+  }
 }
