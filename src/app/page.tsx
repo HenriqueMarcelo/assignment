@@ -1,13 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { db } from '@/libs/local-base'
+import { createUUID } from '@/util/create-uuid'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('')
+  const [users, setUsers] = useState<any>([])
 
   function handleSave() {
     alert(inputValue)
+    db.collection('bananas').add({
+      id: createUUID(),
+      name: inputValue,
+    })
   }
+
+  useEffect(() => {
+    db.collection('bananas')
+      .get()
+      .then((users: any) => {
+        setUsers(users)
+      })
+  }, [])
 
   return (
     <section className="container mx-auto grid grid-cols-5 gap-16 my-16">
@@ -52,12 +67,17 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td className="px-6 py-4">Cozinhar</td>
-                <td className="px-6 py-4">
-                  <button>botão</button>
-                </td>
-              </tr>
+              {users.map((user: any) => (
+                <tr
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  key={user.id}
+                >
+                  <td className="px-6 py-4">{user.name}</td>
+                  <td className="px-6 py-4">
+                    <button>botão</button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
