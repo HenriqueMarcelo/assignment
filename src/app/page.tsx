@@ -1,28 +1,39 @@
 'use client'
 
-import { db } from '@/libs/local-base'
-import { createUUID } from '@/util/create-uuid'
-import { useEffect, useState } from 'react'
+import { CreateTaskUseCase } from '@/domain/use-cases/create-task'
+import { ListTaskUseCase } from '@/domain/use-cases/list-task'
+import { LocalBaseTaskRepository } from '@/implementation/repositories/local-base-task-repository'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('')
   const [users, setUsers] = useState<any>([])
 
-  function handleSave() {
-    alert(inputValue)
-    db.collection('bananas').add({
-      id: createUUID(),
+  const listTaskUseCase = useMemo(() => {
+    const localBaseTaskRepository = new LocalBaseTaskRepository()
+    return new ListTaskUseCase(localBaseTaskRepository)
+  }, [])
+
+  const createTaskUseCase = useMemo(() => {
+    const localBaseTaskRepository = new LocalBaseTaskRepository()
+    return new CreateTaskUseCase(localBaseTaskRepository)
+  }, [])
+
+  async function handleSave() {
+    await createTaskUseCase.execute({
       name: inputValue,
     })
+    updateTasksList()
   }
 
+  const updateTasksList = useCallback(async () => {
+    const { tasks: tasksFromDB } = await listTaskUseCase.execute()
+    setUsers(tasksFromDB)
+  }, [listTaskUseCase])
+
   useEffect(() => {
-    db.collection('bananas')
-      .get()
-      .then((users: any) => {
-        setUsers(users)
-      })
-  }, [])
+    updateTasksList()
+  }, [updateTasksList])
 
   return (
     <section className="container mx-auto grid grid-cols-5 gap-16 my-16">
@@ -46,7 +57,11 @@ export default function Home() {
             />
           </div>
           <div>
-            <button className="bg-green-300 px-4 py-2" onClick={handleSave}>
+            <button
+              className="bg-green-300 px-4 py-2"
+              onClick={handleSave}
+              type="button"
+            >
               Salvar
             </button>
           </div>
