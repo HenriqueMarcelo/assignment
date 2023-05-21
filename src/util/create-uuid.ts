@@ -1,7 +1,15 @@
+function hexTimeStamp() {
+  const timestamp = Date.now()
+  const timestampHex = timestamp.toString(16)
+
+  return timestampHex
+}
+
 export function createUUID() {
   const chars = '0123456789abcdef'.split('')
 
-  const uuid = []
+  const uuid = hexTimeStamp().split('')
+  // const uuid = []
   const rnd = Math.random
   let r
   uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
