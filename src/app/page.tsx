@@ -1,6 +1,7 @@
 'use client'
 
 import { CreateTaskUseCase } from '@/domain/use-cases/create-task'
+import { DeleteTaskUseCase } from '@/domain/use-cases/delete-task'
 import { ListTaskUseCase } from '@/domain/use-cases/list-task'
 import { LocalBaseTaskRepository } from '@/implementation/repositories/local-base-task-repository'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -19,10 +20,23 @@ export default function Home() {
     return new CreateTaskUseCase(localBaseTaskRepository)
   }, [])
 
+  const deleteTaskUseCase = useMemo(() => {
+    const localBaseTaskRepository = new LocalBaseTaskRepository()
+    return new DeleteTaskUseCase(localBaseTaskRepository)
+  }, [])
+
   async function handleSave() {
     await createTaskUseCase.execute({
       name: inputValue,
     })
+    updateTasksList()
+  }
+
+  async function handleDelete(taskId: string) {
+    await deleteTaskUseCase.execute({
+      taskId,
+    })
+
     updateTasksList()
   }
 
@@ -82,14 +96,20 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {users.map((user: any) => (
+              {users.map((task: any) => (
                 <tr
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={user.id}
+                  key={task.id}
                 >
-                  <td className="px-6 py-4">{user.name}</td>
-                  <td className="px-6 py-4">
-                    <button>botão</button>
+                  <td className="px-6 py-4">{task.name}</td>
+                  <td className="px-6 py-4 flex gap-4">
+                    <button className="bg-blue-300 px-4 py-2">editar</button>
+                    <button
+                      className="bg-red-300 px-4 py-2"
+                      onClick={() => handleDelete(task.id)}
+                    >
+                      deletar
+                    </button>
                   </td>
                 </tr>
               ))}

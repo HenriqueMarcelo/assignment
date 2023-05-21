@@ -21,23 +21,18 @@ export class LocalBaseTaskRepository implements TaskRepository {
   }
 
   async findById(id: string) {
-    const task = this.items.find((item) => item.id.toString() === id)
-
-    if (!task) {
-      return null
-    }
-
+    const task = await db.collection('tasks').doc(id).get()
     return task
   }
 
   async delete(task: Task) {
-    const itemIndex = this.items.findIndex((item) => item.id === task.id)
-    this.items.splice(itemIndex, 1)
+    await db.collection('tasks').doc(task.id).delete()
   }
 
   async save(task: Task) {
-    const itemIndex = this.items.findIndex((item) => item.id === task.id)
-
-    this.items[itemIndex] = task
+    await db.collection('tasks').doc(task.id).update({
+      id: task.id,
+      name: task.name,
+    })
   }
 }
