@@ -3,12 +3,14 @@
 import { CreateTaskUseCase } from '@/domain/use-cases/create-task'
 import { DeleteTaskUseCase } from '@/domain/use-cases/delete-task'
 import { ListTaskUseCase } from '@/domain/use-cases/list-task'
+import { UpdateTaskUseCase } from '@/domain/use-cases/update-task'
 import { LocalBaseTaskRepository } from '@/implementation/repositories/local-base-task-repository'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('')
   const [users, setUsers] = useState<any>([])
+  const [taskEditing, setTaskEditing] = useState<null | string>(null)
 
   const listTaskUseCase = useMemo(() => {
     const localBaseTaskRepository = new LocalBaseTaskRepository()
@@ -25,6 +27,11 @@ export default function Home() {
     return new DeleteTaskUseCase(localBaseTaskRepository)
   }, [])
 
+  const updateTaskUseCase = useMemo(() => {
+    const localBaseTaskRepository = new LocalBaseTaskRepository()
+    return new UpdateTaskUseCase(localBaseTaskRepository)
+  }, [])
+
   async function handleSave() {
     await createTaskUseCase.execute({
       name: inputValue,
@@ -37,6 +44,15 @@ export default function Home() {
       taskId,
     })
 
+    updateTasksList()
+  }
+
+  async function handleUpdate(name: string) {
+    await updateTaskUseCase.execute({
+      name: 'new name',
+      taskId: taskEditing!,
+    })
+    setTaskEditing(null)
     updateTasksList()
   }
 
@@ -65,6 +81,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <label htmlFor="">Nome:</label>
             <input
+              value={inputValue}
               type="text"
               className="px-4 py-2"
               onChange={(e) => setInputValue(e.target.value)}
@@ -101,15 +118,52 @@ export default function Home() {
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   key={task.id}
                 >
-                  <td className="px-6 py-4">{task.name}</td>
+                  <td className="px-6 py-4">
+                    {taskEditing === task.id ? (
+                      <input
+                        value={inputValue}
+                        type="text"
+                        className="px-4 py-2 w-64 border"
+                        onChange={(e) => setInputValue(e.target.value)}
+                      />
+                    ) : (
+                      <div className="w-64">{task.name}</div>
+                    )}
+                  </td>
                   <td className="px-6 py-4 flex gap-4">
-                    <button className="bg-blue-300 px-4 py-2">editar</button>
-                    <button
-                      className="bg-red-300 px-4 py-2"
-                      onClick={() => handleDelete(task.id)}
-                    >
-                      deletar
-                    </button>
+                    {taskEditing === task.id ? (
+                      <button
+                        className="bg-orange-300 px-4 py-2 w-24"
+                        onClick={() => handleUpdate(inputValue)}
+                      >
+                        editar
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-blue-300 px-4 py-2 w-24"
+                        onClick={() => {
+                          setTaskEditing(task.id)
+                          setInputValue(task.name)
+                        }}
+                      >
+                        editar
+                      </button>
+                    )}
+                    {taskEditing === task.id ? (
+                      <button
+                        className="bg-stone-300 px-4 py-2 w-24"
+                        onClick={() => setTaskEditing(null)}
+                      >
+                        cancelar
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-red-300 px-4 py-2 w-24"
+                        onClick={() => handleDelete(task.id)}
+                      >
+                        deletar
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
