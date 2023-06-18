@@ -24,3 +24,5 @@
 - [ ] Tables
 - [ ] Name for fables
 - [ ] Range of Date for table
+- [ ] Salvar backup
+- [ ] i16n

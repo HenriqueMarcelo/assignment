@@ -16,7 +16,35 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <section className="container mx-auto grid grid-cols-5 gap-16 my-16 bg-orange-100 pr-16 shadow drop-shadow-2xl">
+          <aside className="col-span-1 bg-sky-950 text-white">
+            <ul>
+              <li>
+                <a href="" className="p-4 block bg-teal-700 border-b">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="" className="p-4 block hover:bg-sky-700 border-b">
+                  Tasks
+                </a>
+              </li>
+              <li>
+                <a href="" className="p-4 block hover:bg-sky-700 border-b">
+                  Assignable
+                </a>
+              </li>
+              <li>
+                <a href="" className="p-4 block hover:bg-sky-700 border-b">
+                  Assignment
+                </a>
+              </li>
+            </ul>
+          </aside>
+          {children}
+        </section>
+      </body>
     </html>
   )
 }
