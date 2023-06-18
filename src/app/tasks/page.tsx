@@ -10,7 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 export default function Any() {
   const [inputValueNew, setInputValueNew] = useState('')
   const [inputValueEdit, setInputValueEdit] = useState('')
-  const [users, setUsers] = useState<any>([])
+  const [tasks, setTasks] = useState<any>([])
   const [taskEditing, setTaskEditing] = useState<null | string>(null)
 
   const listTaskUseCase = useMemo(() => {
@@ -60,7 +60,7 @@ export default function Any() {
 
   const updateTasksList = useCallback(async () => {
     const { tasks: tasksFromDB } = await listTaskUseCase.execute()
-    setUsers(tasksFromDB)
+    setTasks(tasksFromDB)
   }, [listTaskUseCase])
 
   useEffect(() => {
@@ -76,13 +76,13 @@ export default function Any() {
           <input
             value={inputValueNew}
             type="text"
-            className="px-4 py-2 shadow"
+            className="px-4 py-2 shadow-md"
             onChange={(e) => setInputValueNew(e.target.value)}
           />
         </div>
         <div>
           <button
-            className="bg-green-300 px-4 py-2"
+            className="bg-green-300 px-4 py-2 shadow-md rounded-lg"
             onClick={handleSave}
             type="button"
           >
@@ -93,7 +93,7 @@ export default function Any() {
 
       <h2 className="text-4xl	font-bold mb-8 mt-16">Tarefas</h2>
 
-      <div className="relative overflow-x-auto shadow">
+      <div className="relative overflow-x-auto shadow-md">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
           <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -106,7 +106,7 @@ export default function Any() {
             </tr>
           </thead>
           <tbody>
-            {users.map((task: any) => (
+            {tasks.map((task: any) => (
               <tr
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={task.id}
