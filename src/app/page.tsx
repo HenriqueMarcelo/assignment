@@ -49,7 +49,7 @@ export default function Home() {
 
   async function handleUpdate(name: string) {
     await updateTaskUseCase.execute({
-      name: 'new name',
+      name: inputValue,
       taskId: taskEditing!,
     })
     setTaskEditing(null)
