@@ -106,63 +106,63 @@ export default function Any() {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task: any) => (
-              <tr
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={task.id}
-              >
-                <td className="px-6 py-4">
-                  {taskEditing === task.id ? (
+            {tasks.map((task: any) => {
+              const isEditing = taskEditing === task.id
+              return (
+                <tr
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  key={task.id}
+                >
+                  <td className="px-6 py-4">
                     <input
-                      value={inputValueEdit}
-                      className="px-4 py-2 w-64 border border-gray-500"
+                      value={isEditing ? inputValueEdit : task.name}
+                      className={`px-4 py-2 w-64 border ${
+                        isEditing
+                          ? 'border-gray-500'
+                          : 'border-transparent bg-white'
+                      }`}
                       onChange={(e) => setInputValueEdit(e.target.value)}
+                      disabled={!isEditing}
                     />
-                  ) : (
-                    <input
-                      className="px-4 py-2 w-64 border border-transparent bg-white"
-                      value={task.name}
-                      disabled
-                    />
-                  )}
-                </td>
-                <td className="px-6 py-4 flex gap-4">
-                  {taskEditing === task.id ? (
-                    <button
-                      className="bg-orange-300 px-4 py-2 w-24"
-                      onClick={() => handleUpdate(inputValueEdit)}
-                    >
-                      salvar
-                    </button>
-                  ) : (
-                    <button
-                      className="bg-blue-300 px-4 py-2 w-24"
-                      onClick={() => {
-                        setTaskEditing(task.id)
-                        setInputValueEdit(task.name)
-                      }}
-                    >
-                      editar
-                    </button>
-                  )}
-                  {taskEditing === task.id ? (
-                    <button
-                      className="bg-stone-300 px-4 py-2 w-24"
-                      onClick={() => setTaskEditing(null)}
-                    >
-                      cancelar
-                    </button>
-                  ) : (
-                    <button
-                      className="bg-red-300 px-4 py-2 w-24"
-                      onClick={() => handleDelete(task.id)}
-                    >
-                      deletar
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-6 py-4 flex gap-4">
+                    {isEditing ? (
+                      <button
+                        className="bg-orange-300 px-4 py-2 w-24"
+                        onClick={() => handleUpdate(inputValueEdit)}
+                      >
+                        salvar
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-blue-300 px-4 py-2 w-24"
+                        onClick={() => {
+                          setTaskEditing(task.id)
+                          setInputValueEdit(task.name)
+                        }}
+                      >
+                        editar
+                      </button>
+                    )}
+                    {isEditing ? (
+                      <button
+                        className="bg-stone-300 px-4 py-2 w-24"
+                        onClick={() => setTaskEditing(null)}
+                      >
+                        cancelar
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-red-300 px-4 py-2 w-24"
+                        onClick={() => handleDelete(task.id)}
+                      >
+                        deletar
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
