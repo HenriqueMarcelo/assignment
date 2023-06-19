@@ -2,14 +2,8 @@
 
 import { Assignable } from '@/domain/entities/Assignable'
 import { Task } from '@/domain/entities/Task'
-import { CreateAssignableUseCase } from '@/domain/use-cases/create-assignable'
-import { DeleteAssignableUseCase } from '@/domain/use-cases/delete-assignable'
-import { ListAssignableUseCase } from '@/domain/use-cases/list-assignable'
-import { ListTaskUseCase } from '@/domain/use-cases/list-task'
-import { UpdateAssignableUseCase } from '@/domain/use-cases/update-assignable'
-import { LocalBaseAssignableRepository } from '@/implementation/repositories/local-base-assignable-repository'
-import { LocalBaseTaskRepository } from '@/implementation/repositories/local-base-task-repository'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useUseCases } from '@/hooks/use-cases'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function Any() {
   const [inputValueNew, setInputValueNew] = useState('')
@@ -22,30 +16,13 @@ export default function Any() {
     null,
   )
 
-  const listTaskUseCase = useMemo(() => {
-    const localBaseTaskRepository = new LocalBaseTaskRepository()
-    return new ListTaskUseCase(localBaseTaskRepository)
-  }, [])
-
-  const listAssignableUseCase = useMemo(() => {
-    const localBaseAssignableRepository = new LocalBaseAssignableRepository()
-    return new ListAssignableUseCase(localBaseAssignableRepository)
-  }, [])
-
-  const createAssignableUseCase = useMemo(() => {
-    const localBaseAssignableRepository = new LocalBaseAssignableRepository()
-    return new CreateAssignableUseCase(localBaseAssignableRepository)
-  }, [])
-
-  const deleteAssignableUseCase = useMemo(() => {
-    const localBaseAssignableRepository = new LocalBaseAssignableRepository()
-    return new DeleteAssignableUseCase(localBaseAssignableRepository)
-  }, [])
-
-  const updateAssignableUseCase = useMemo(() => {
-    const localBaseAssignableRepository = new LocalBaseAssignableRepository()
-    return new UpdateAssignableUseCase(localBaseAssignableRepository)
-  }, [])
+  const {
+    listTaskUseCase,
+    listAssignableUseCase,
+    createAssignableUseCase,
+    deleteAssignableUseCase,
+    updateAssignableUseCase,
+  } = useUseCases()
 
   async function handleSave() {
     await createAssignableUseCase.execute({

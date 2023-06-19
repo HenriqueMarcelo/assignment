@@ -1,11 +1,7 @@
 'use client'
 
-import { CreateTaskUseCase } from '@/domain/use-cases/create-task'
-import { DeleteTaskUseCase } from '@/domain/use-cases/delete-task'
-import { ListTaskUseCase } from '@/domain/use-cases/list-task'
-import { UpdateTaskUseCase } from '@/domain/use-cases/update-task'
-import { LocalBaseTaskRepository } from '@/implementation/repositories/local-base-task-repository'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useUseCases } from '@/hooks/use-cases'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function Any() {
   const [inputValueNew, setInputValueNew] = useState('')
@@ -13,25 +9,12 @@ export default function Any() {
   const [tasks, setTasks] = useState<any>([])
   const [taskEditing, setTaskEditing] = useState<null | string>(null)
 
-  const listTaskUseCase = useMemo(() => {
-    const localBaseTaskRepository = new LocalBaseTaskRepository()
-    return new ListTaskUseCase(localBaseTaskRepository)
-  }, [])
-
-  const createTaskUseCase = useMemo(() => {
-    const localBaseTaskRepository = new LocalBaseTaskRepository()
-    return new CreateTaskUseCase(localBaseTaskRepository)
-  }, [])
-
-  const deleteTaskUseCase = useMemo(() => {
-    const localBaseTaskRepository = new LocalBaseTaskRepository()
-    return new DeleteTaskUseCase(localBaseTaskRepository)
-  }, [])
-
-  const updateTaskUseCase = useMemo(() => {
-    const localBaseTaskRepository = new LocalBaseTaskRepository()
-    return new UpdateTaskUseCase(localBaseTaskRepository)
-  }, [])
+  const {
+    listTaskUseCase,
+    createTaskUseCase,
+    deleteTaskUseCase,
+    updateTaskUseCase,
+  } = useUseCases()
 
   async function handleSave() {
     await createTaskUseCase.execute({
