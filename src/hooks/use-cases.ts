@@ -1,4 +1,5 @@
 import { CreateAssignableUseCase } from '@/domain/use-cases/create-assignable'
+import { CreateAssignmentUseCase } from '@/domain/use-cases/create-assignment'
 import { CreateTaskUseCase } from '@/domain/use-cases/create-task'
 import { DeleteAssignableUseCase } from '@/domain/use-cases/delete-assignable'
 import { DeleteTaskUseCase } from '@/domain/use-cases/delete-task'
@@ -7,6 +8,7 @@ import { ListTaskUseCase } from '@/domain/use-cases/list-task'
 import { UpdateAssignableUseCase } from '@/domain/use-cases/update-assignable'
 import { UpdateTaskUseCase } from '@/domain/use-cases/update-task'
 import { LocalBaseAssignableRepository } from '@/implementation/repositories/local-base-assignable-repository'
+import { LocalBaseAssignmentRepository } from '@/implementation/repositories/local-base-assignment-repository'
 import { LocalBaseTaskRepository } from '@/implementation/repositories/local-base-task-repository'
 import { useMemo } from 'react'
 
@@ -51,6 +53,11 @@ export function useUseCases() {
     return new UpdateTaskUseCase(localBaseTaskRepository)
   }, [])
 
+  const createAssignmentUseCase = useMemo(() => {
+    const localBaseAssignmentRepository = new LocalBaseAssignmentRepository()
+    return new CreateAssignmentUseCase(localBaseAssignmentRepository)
+  }, [])
+
   return {
     listTaskUseCase,
     listAssignableUseCase,
@@ -60,5 +67,6 @@ export function useUseCases() {
     createTaskUseCase,
     deleteTaskUseCase,
     updateTaskUseCase,
+    createAssignmentUseCase,
   }
 }

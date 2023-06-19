@@ -9,14 +9,14 @@
 
 ## GUI
 
-- [ ] CRUD Tasks
-- [ ] CRUD Assignable
+- [x] CRUD Tasks
+- [x] CRUD Assignable
 - [ ] CRUD Assignment
 
 ## Implementation
 
-- [ ] CRUD Tasks
-- [ ] CRUD Assignable
+- [x] CRUD Tasks
+- [x] CRUD Assignable
 - [ ] CRUD Assignment
 
 ## Future
@@ -26,3 +26,4 @@
 - [ ] Range of Date for table
 - [ ] Salvar backup
 - [ ] i16n
+- [x] Refactory using custon hook
