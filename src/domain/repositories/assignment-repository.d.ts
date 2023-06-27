@@ -6,4 +6,8 @@ export interface AssignmentRepository {
   findById(id: string): Promise<Assignment | null>
   delete(assignment: Assignment): Promise<void>
   save(assignment: Assignment): Promise<void>
+
+  getLastAssignmentOfAssignable(
+    assignableId: string,
+  ): Promise<Assignment | null>
 }

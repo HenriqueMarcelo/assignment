@@ -6,4 +6,6 @@ export interface AssignableRepository {
   findById(id: string): Promise<Assignable | null>
   delete(assignable: Assignable): Promise<void>
   save(assignable: Assignable): Promise<void>
+
+  listByTask(taskId): Promise<Assignable[]>
 }
