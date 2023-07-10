@@ -32,4 +32,12 @@ export class InMemoryAssignableRepository implements AssignableRepository {
 
     this.items[itemIndex] = assignable
   }
+
+  async listByTask(taskId: string): Promise<Assignable[]> {
+    const assignablesForThatTask = this.items.filter((assignable) =>
+      assignable.tasksIds.includes(taskId),
+    )
+
+    return assignablesForThatTask
+  }
 }

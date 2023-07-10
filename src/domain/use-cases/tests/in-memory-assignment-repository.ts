@@ -32,4 +32,16 @@ export class InMemoryAssignmentRepository implements AssignmentRepository {
 
     this.items[itemIndex] = assignment
   }
+
+  async getLastAssignmentOfAssignable(assignableId: string) {
+    const allAssignmenetOfAssignable = this.items.filter(
+      (assignment) => assignment.assignableId === assignableId,
+    )
+
+    allAssignmenetOfAssignable.sort((a, b) => {
+      return a.date.getTime() - b.date.getTime()
+    })
+
+    return allAssignmenetOfAssignable[0]
+  }
 }

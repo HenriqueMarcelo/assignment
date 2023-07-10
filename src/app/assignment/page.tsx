@@ -10,9 +10,8 @@ import { newDateFromString } from '@/util/new-date-from-string'
 export default function Any() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [assignables, setAssignables] = useState<Assignable[]>([])
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const { control, register, handleSubmit, watch } = useForm()
+  const { control, register, handleSubmit } = useForm()
   useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'assignables', // unique name for your Field Array
@@ -21,11 +20,16 @@ export default function Any() {
   const { listAssignableUseCase, listTaskUseCase, createAssignmentUseCase } =
     useUseCases()
 
-  async function generateAutoAssignment() {}
+  async function generateAutoAssignment(date: Date) {
+    for (const task of tasks) {
+      console.log(task)
+    }
+  }
 
   function handleSetDate(dateString: string) {
     const dateSelected = newDateFromString(dateString)
-    setSelectedDate(dateSelected)
+
+    generateAutoAssignment(dateSelected)
   }
 
   async function handleSave(data: FieldValues) {
