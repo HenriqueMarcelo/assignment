@@ -18,17 +18,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <section className="container mx-auto grid grid-cols-5 gap-16 2xl:my-16 my-0 bg-orange-100 pr-16 shadow-2xl drop-shadow-2xl">
-          <aside className="col-span-1 bg-sky-950 text-white">
+          <aside className="col-span-1 bg-orange-950 text-white">
             <ul>
               <li>
-                <a href="/" className="p-4 block bg-teal-700 border-b">
+                <a href="/" className="p-4 block bg-orange-700 border-b">
                   Home
                 </a>
               </li>
               <li>
                 <a
                   href="/tasks"
-                  className="p-4 block hover:bg-sky-700 border-b"
+                  className="p-4 block hover:bg-orange-700 border-b"
                 >
                   Tasks
                 </a>
@@ -36,7 +36,7 @@ export default function RootLayout({
               <li>
                 <a
                   href="/assignable"
-                  className="p-4 block hover:bg-sky-700 border-b"
+                  className="p-4 block hover:bg-orange-700 border-b"
                 >
                   Assignable
                 </a>
@@ -44,7 +44,7 @@ export default function RootLayout({
               <li>
                 <a
                   href="/assignment"
-                  className="p-4 block hover:bg-sky-700 border-b"
+                  className="p-4 block hover:bg-orange-700 border-b"
                 >
                   Assignment
                 </a>

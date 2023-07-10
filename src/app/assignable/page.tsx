@@ -115,8 +115,8 @@ export default function Any() {
       <h2 className="text-4xl	font-bold mb-8 mt-16">Designáveis</h2>
 
       <div className="relative overflow-x-auto shadow-md">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-9500  ">
+          <thead className="text-xs text-gray-950 uppercase bg-orange-200 ">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Nome
@@ -133,10 +133,7 @@ export default function Any() {
             {assignables.map((assignable: Assignable) => {
               const isEditing = assignableEditing === assignable.id
               return (
-                <tr
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={assignable.id}
-                >
+                <tr className="bg-white border-b" key={assignable.id}>
                   <td className="px-6 py-4">
                     <input
                       value={isEditing ? inputValueEdit : assignable.name}

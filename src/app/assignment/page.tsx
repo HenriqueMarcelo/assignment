@@ -73,8 +73,8 @@ export default function Any() {
             {...register('date')}
           />
           <label htmlFor="">Tarefas:</label>
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-sm text-left text-gray-950  ">
+            <thead className="text-xs text-gray-950 uppercase bg-orange-200 ">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Tarefa
@@ -89,10 +89,7 @@ export default function Any() {
             </thead>
             <tbody>
               {tasks.map((task: Task, index) => (
-                <tr
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={task.id}
-                >
+                <tr className="bg-white border-b " key={task.id}>
                   <td className="px-6 py-4">{task.name}</td>
                   <td className="px-6 py-4">
                     <select
