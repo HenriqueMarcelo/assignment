@@ -5,12 +5,14 @@ import { Task } from '@/domain/entities/Task'
 import { useUseCases } from '@/hooks/use-cases'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
+import { newDateFromString } from '@/util/new-date-from-string'
 
 export default function Any() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [assignables, setAssignables] = useState<Assignable[]>([])
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const { control, register, handleSubmit } = useForm()
+  const { control, register, handleSubmit, watch } = useForm()
   useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'assignables', // unique name for your Field Array
@@ -18,6 +20,13 @@ export default function Any() {
 
   const { listAssignableUseCase, listTaskUseCase, createAssignmentUseCase } =
     useUseCases()
+
+  async function generateAutoAssignment() {}
+
+  function handleSetDate(dateString: string) {
+    const dateSelected = newDateFromString(dateString)
+    setSelectedDate(dateSelected)
+  }
 
   async function handleSave(data: FieldValues) {
     for (const line of data.assignables) {
@@ -70,7 +79,10 @@ export default function Any() {
             type="date"
             className="px-4 py-2 shadow-md"
             required
-            {...register('date')}
+            {...register('date', {
+              onChange: (e) => handleSetDate(e.target.value),
+              valueAsDate: true,
+            })}
           />
           <label htmlFor="">Tarefas:</label>
           <table className="w-full text-sm text-left text-gray-950  ">
