@@ -123,7 +123,7 @@ async function createScenery() {
   }
 }
 
-it('should the task with only 1 person be done by this person', async () => {
+it('should get the only person able to the task', async () => {
   const { task3, assignable3 } = await createScenery()
 
   const { assignableIds } = await sut.execute({
@@ -134,7 +134,7 @@ it('should the task with only 1 person be done by this person', async () => {
   expect(assignableIds).toStrictEqual([assignable3.id])
 })
 
-it('should the task with 2 persons be only possible for 2 people', async () => {
+it('should get only 2 persons when the task can be only 2 persons', async () => {
   const { task2 } = await createScenery()
 
   const { assignableIds } = await sut.execute({
@@ -145,7 +145,7 @@ it('should the task with 2 persons be only possible for 2 people', async () => {
   expect(assignableIds).toHaveLength(2)
 })
 
-it.only('should the task be done by the person with more time idle first', async () => {
+it('should get the most idle person', async () => {
   const { task1, assignable1, assignable2, assignable3 } = await createScenery()
 
   const { assignableIds } = await sut.execute({
@@ -157,5 +157,20 @@ it.only('should the task be done by the person with more time idle first', async
     assignable2.id,
     assignable3.id,
     assignable1.id,
+  ])
+})
+
+it('should put some person in the end of the array if not requested', async () => {
+  const { task1, assignable1, assignable2, assignable3 } = await createScenery()
+
+  const { assignableIds } = await sut.execute({
+    taskId: task1.id,
+    usersNotRequested: [assignable2.id],
+  })
+
+  expect(assignableIds).toStrictEqual([
+    assignable3.id,
+    assignable1.id,
+    assignable2.id,
   ])
 })
