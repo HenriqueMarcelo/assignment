@@ -3,8 +3,6 @@ import { AssignmentRepository } from '@/domain/repositories/assignment-repositor
 import { db } from '@/libs/local-base'
 
 export class LocalBaseAssignmentRepository implements AssignmentRepository {
-  items: Assignment[] = []
-
   async create(assignment: Assignment) {
     await db.collection('assignments').add(
       {
@@ -19,12 +17,12 @@ export class LocalBaseAssignmentRepository implements AssignmentRepository {
 
   async list() {
     const assignments = await db.collection('assignments').get()
-    return assignments
+    return assignments as Assignment[]
   }
 
   async findById(id: string) {
     const assignment = await db.collection('assignments').doc(id).get()
-    return assignment
+    return assignment as Assignment
   }
 
   async delete(assignment: Assignment) {
@@ -38,5 +36,18 @@ export class LocalBaseAssignmentRepository implements AssignmentRepository {
       assignableId: assignment.assignableId,
       date: assignment.date,
     })
+  }
+
+  async getLastAssignmentOfAssignable(assignableId: string) {
+    const allAssignments = await this.list()
+    const allAssignmenetOfAssignable = allAssignments.filter(
+      (assignment) => assignment.assignableId === assignableId,
+    )
+
+    allAssignmenetOfAssignable.sort((a, b) => {
+      return a.date.getTime() - b.date.getTime()
+    })
+
+    return allAssignmenetOfAssignable.slice(-1)[0]
   }
 }

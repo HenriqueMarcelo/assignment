@@ -11,18 +11,31 @@ export default function Any() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [assignables, setAssignables] = useState<Assignable[]>([])
 
-  const { control, register, handleSubmit } = useForm()
+  const { control, register, handleSubmit, setValue } = useForm()
   useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'assignables', // unique name for your Field Array
   })
 
-  const { listAssignableUseCase, listTaskUseCase, createAssignmentUseCase } =
-    useUseCases()
+  const {
+    listAssignableUseCase,
+    listTaskUseCase,
+    createAssignmentUseCase,
+    getNextAssignableByTaskUseCase,
+  } = useUseCases()
 
   async function generateAutoAssignment(date: Date) {
-    for (const task of tasks) {
-      console.log(task)
+    const usersNotRequested = [] as string[]
+    for (const [index, task] of tasks.entries()) {
+      const { assignableIds } = await getNextAssignableByTaskUseCase.execute({
+        taskId: task.id,
+        usersNotRequested,
+      })
+
+      const assignableChoosen = assignableIds[0]
+      usersNotRequested.push(assignableChoosen)
+
+      setValue(`assignables.${index}.${task.id}`, assignableChoosen)
     }
   }
 

@@ -3,8 +3,6 @@ import { AssignableRepository } from '@/domain/repositories/assignable-repositor
 import { db } from '@/libs/local-base'
 
 export class LocalBaseAssignableRepository implements AssignableRepository {
-  items: Assignable[] = []
-
   async create(assignable: Assignable) {
     await db.collection('assignables').add(
       {
@@ -18,12 +16,12 @@ export class LocalBaseAssignableRepository implements AssignableRepository {
 
   async list() {
     const assignables = await db.collection('assignables').get()
-    return assignables
+    return assignables as Assignable[]
   }
 
   async findById(id: string) {
     const assignable = await db.collection('assignables').doc(id).get()
-    return assignable
+    return assignable as Assignable
   }
 
   async delete(assignable: Assignable) {
@@ -36,5 +34,14 @@ export class LocalBaseAssignableRepository implements AssignableRepository {
       name: assignable.name,
       tasksIds: assignable.tasksIds,
     })
+  }
+
+  async listByTask(taskId: string): Promise<Assignable[]> {
+    const allAssignable = await this.list()
+    const assignablesForThatTask = allAssignable.filter((assignable) =>
+      assignable.tasksIds.includes(taskId),
+    )
+
+    return assignablesForThatTask
   }
 }

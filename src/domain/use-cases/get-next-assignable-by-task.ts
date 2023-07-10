@@ -88,8 +88,12 @@ export class GetNextAssignableByTaskUseCase {
 
     return {
       assignableIds: [
-        ...lastAssignmentOfrequestedAssignable.map((a) => a!.assignableId),
-        ...lastAssignmentOfUnrequestedAssignable.map((a) => a!.assignableId),
+        ...lastAssignmentOfrequestedAssignable
+          .filter((a) => !!a)
+          .map((a) => a!.assignableId),
+        ...lastAssignmentOfUnrequestedAssignable
+          .filter((a) => !!a)
+          .map((a) => a!.assignableId),
       ],
     }
   }
