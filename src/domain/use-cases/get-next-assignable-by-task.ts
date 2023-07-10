@@ -34,13 +34,13 @@ export class GetNextAssignableByTaskUseCase {
 
     const requestedAssignablesOfTask = allAssignablesOfTask.filter(
       (assignable) => {
-        return usersNotRequested.includes(assignable.id)
+        return !usersNotRequested.includes(assignable.id)
       },
     )
 
     const unrequestedAssignablesOfTask = allAssignablesOfTask.filter(
       (assignable) => {
-        return !usersNotRequested.includes(assignable.id)
+        return usersNotRequested.includes(assignable.id)
       },
     )
 

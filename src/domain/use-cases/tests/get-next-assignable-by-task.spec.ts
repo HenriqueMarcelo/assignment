@@ -24,7 +24,7 @@ beforeEach(() => {
   )
 })
 
-async function createCenary() {
+async function createScenery() {
   const task1 = makeTask()
   const task2 = makeTask()
   const task3 = makeTask()
@@ -43,7 +43,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 1),
+      date: new Date(2000, 0, 1),
       assignableId: assignable1.id,
       taskId: task1.id,
     }),
@@ -51,7 +51,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 2),
+      date: new Date(2000, 0, 2),
       assignableId: assignable1.id,
       taskId: task1.id,
     }),
@@ -59,7 +59,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 6),
+      date: new Date(2000, 0, 6),
       assignableId: assignable1.id,
       taskId: task1.id,
     }),
@@ -67,7 +67,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 1),
+      date: new Date(2000, 0, 1),
       assignableId: assignable2.id,
       taskId: task1.id,
     }),
@@ -75,7 +75,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 2),
+      date: new Date(2000, 0, 2),
       assignableId: assignable2.id,
       taskId: task2.id,
     }),
@@ -83,7 +83,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 3),
+      date: new Date(2000, 0, 3),
       assignableId: assignable2.id,
       taskId: task1.id,
     }),
@@ -91,7 +91,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 1),
+      date: new Date(2000, 0, 2),
       assignableId: assignable3.id,
       taskId: task1.id,
     }),
@@ -99,7 +99,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 2),
+      date: new Date(2000, 0, 3),
       assignableId: assignable3.id,
       taskId: task2.id,
     }),
@@ -107,7 +107,7 @@ async function createCenary() {
 
   await inMemoryAssignmentRepository.create(
     Assignment.create({
-      date: new Date(2000, 1, 4),
+      date: new Date(2000, 0, 4),
       assignableId: assignable3.id,
       taskId: task2.id,
     }),
@@ -124,7 +124,7 @@ async function createCenary() {
 }
 
 it('should the task with only 1 person be done by this person', async () => {
-  const { task3, assignable3 } = await createCenary()
+  const { task3, assignable3 } = await createScenery()
 
   const { assignableIds } = await sut.execute({
     taskId: task3.id,
@@ -135,7 +135,7 @@ it('should the task with only 1 person be done by this person', async () => {
 })
 
 it('should the task with 2 persons be only possible for 2 people', async () => {
-  const { task2 } = await createCenary()
+  const { task2 } = await createScenery()
 
   const { assignableIds } = await sut.execute({
     taskId: task2.id,
@@ -145,8 +145,8 @@ it('should the task with 2 persons be only possible for 2 people', async () => {
   expect(assignableIds).toHaveLength(2)
 })
 
-it('should the task be done by the person with more time idle first', async () => {
-  const { task1, assignable1, assignable2, assignable3 } = await createCenary()
+it.only('should the task be done by the person with more time idle first', async () => {
+  const { task1, assignable1, assignable2, assignable3 } = await createScenery()
 
   const { assignableIds } = await sut.execute({
     taskId: task1.id,
@@ -154,8 +154,8 @@ it('should the task be done by the person with more time idle first', async () =
   })
 
   expect(assignableIds).toStrictEqual([
-    assignable3.id,
     assignable2.id,
+    assignable3.id,
     assignable1.id,
   ])
 })

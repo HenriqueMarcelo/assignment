@@ -42,6 +42,6 @@ export class InMemoryAssignmentRepository implements AssignmentRepository {
       return a.date.getTime() - b.date.getTime()
     })
 
-    return allAssignmenetOfAssignable[0]
+    return allAssignmenetOfAssignable.slice(-1)[0]
   }
 }
