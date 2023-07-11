@@ -1,3 +1,4 @@
+import { Assignment } from '../entities/Assignment'
 import { AssignableRepository } from '../repositories/assignable-repository'
 import { AssignmentRepository } from '../repositories/assignment-repository'
 import { TaskRepository } from '../repositories/task-repository'
@@ -52,7 +53,7 @@ export class GetNextAssignableByTaskUseCase {
       ),
     )
 
-    lastAssignmentOfrequestedAssignable.sort((a, b) => {
+    const sortWhoMustBeTheNextOne = (a: Assignment, b: Assignment) => {
       let aDate = new Date(0)
       let bDate = new Date(0)
 
@@ -62,8 +63,21 @@ export class GetNextAssignableByTaskUseCase {
       if (b && b.date) {
         bDate = b.date
       }
-      return aDate.getTime() - bDate.getTime()
-    })
+
+      const dateDiff = aDate.getTime() - bDate.getTime()
+
+      if (dateDiff === 0) {
+        if (a.taskId === task!.id) {
+          return 1
+        } else {
+          return -1
+        }
+      }
+
+      return dateDiff
+    }
+
+    lastAssignmentOfrequestedAssignable.sort(sortWhoMustBeTheNextOne)
 
     // ----------
 
@@ -73,18 +87,7 @@ export class GetNextAssignableByTaskUseCase {
       ),
     )
 
-    lastAssignmentOfUnrequestedAssignable.sort((a, b) => {
-      let aDate = new Date(0)
-      let bDate = new Date(0)
-
-      if (a && a.date) {
-        aDate = a.date
-      }
-      if (b && b.date) {
-        bDate = b.date
-      }
-      return aDate.getTime() - bDate.getTime()
-    })
+    lastAssignmentOfUnrequestedAssignable.sort(sortWhoMustBeTheNextOne)
 
     return {
       assignableIds: [
