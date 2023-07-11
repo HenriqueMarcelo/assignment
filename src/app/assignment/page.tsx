@@ -26,7 +26,16 @@ export default function Any() {
 
   async function generateAutoAssignment(date: Date) {
     const usersNotRequested = [] as string[]
-    for (const [index, task] of tasks.entries()) {
+
+    const startingIndex = Math.floor(Math.random() * tasks.length)
+
+    const randomTasksArray = tasks
+      .slice(startingIndex)
+      .concat(tasks.slice(0, startingIndex))
+
+    for (const task of randomTasksArray) {
+      const index = tasks.indexOf(task)
+
       const { assignableIds } = await getNextAssignableByTaskUseCase.execute({
         taskId: task.id,
         usersNotRequested,
