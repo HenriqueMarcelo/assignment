@@ -7,7 +7,5 @@ export interface AssignmentRepository {
   delete(assignment: Assignment): Promise<void>
   save(assignment: Assignment): Promise<void>
 
-  getLastAssignmentOfAssignable(
-    assignableId: string,
-  ): Promise<Assignment | null>
+  getLastAssignmentOfAssignable(assignableId: string): Promise<Assignment>
 }

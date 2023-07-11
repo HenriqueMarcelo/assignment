@@ -48,6 +48,14 @@ export class LocalBaseAssignmentRepository implements AssignmentRepository {
       return a.date.getTime() - b.date.getTime()
     })
 
-    return allAssignmenetOfAssignable.slice(-1)[0]
+    if (allAssignmenetOfAssignable.slice(-1)[0]) {
+      return allAssignmenetOfAssignable.slice(-1)[0]
+    }
+
+    return Assignment.create({
+      assignableId,
+      date: null as unknown as Date,
+      taskId: '',
+    })
   }
 }

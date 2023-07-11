@@ -24,7 +24,7 @@ beforeEach(() => {
   )
 })
 
-async function createScenery() {
+async function createScenery(createAssignments = true) {
   const task1 = makeTask()
   const task2 = makeTask()
   const task3 = makeTask()
@@ -41,77 +41,79 @@ async function createScenery() {
   await inMemoryAssignableRepository.create(assignable2)
   await inMemoryAssignableRepository.create(assignable3)
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 1),
-      assignableId: assignable1.id,
-      taskId: task1.id,
-    }),
-  )
+  if (createAssignments) {
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 1),
+        assignableId: assignable1.id,
+        taskId: task1.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 2),
-      assignableId: assignable1.id,
-      taskId: task1.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 2),
+        assignableId: assignable1.id,
+        taskId: task1.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 6),
-      assignableId: assignable1.id,
-      taskId: task1.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 6),
+        assignableId: assignable1.id,
+        taskId: task1.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 1),
-      assignableId: assignable2.id,
-      taskId: task1.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 1),
+        assignableId: assignable2.id,
+        taskId: task1.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 2),
-      assignableId: assignable2.id,
-      taskId: task2.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 2),
+        assignableId: assignable2.id,
+        taskId: task2.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 3),
-      assignableId: assignable2.id,
-      taskId: task1.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 3),
+        assignableId: assignable2.id,
+        taskId: task1.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 2),
-      assignableId: assignable3.id,
-      taskId: task1.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 2),
+        assignableId: assignable3.id,
+        taskId: task1.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 3),
-      assignableId: assignable3.id,
-      taskId: task2.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 3),
+        assignableId: assignable3.id,
+        taskId: task2.id,
+      }),
+    )
 
-  await inMemoryAssignmentRepository.create(
-    Assignment.create({
-      date: new Date(2000, 0, 4),
-      assignableId: assignable3.id,
-      taskId: task2.id,
-    }),
-  )
+    await inMemoryAssignmentRepository.create(
+      Assignment.create({
+        date: new Date(2000, 0, 4),
+        assignableId: assignable3.id,
+        taskId: task2.id,
+      }),
+    )
+  }
 
   return {
     task1,
@@ -173,4 +175,26 @@ it('should put some person in the end of the array if not requested', async () =
     assignable1.id,
     assignable2.id,
   ])
+})
+
+it.only('should consider person as idle when there is no register', async () => {
+  const { task1, assignable1 } = await createScenery(false)
+
+  const { assignableIds } = await sut.execute({
+    taskId: task1.id,
+    usersNotRequested: [],
+  })
+
+  expect(assignableIds).toContain(assignable1.id)
+})
+
+it.only('should not crash when the not requested user has no history', async () => {
+  const { task1, assignable1, assignable2 } = await createScenery(false)
+
+  const { assignableIds } = await sut.execute({
+    taskId: task1.id,
+    usersNotRequested: [assignable2.id],
+  })
+
+  expect(assignableIds).toContain(assignable1.id)
 })

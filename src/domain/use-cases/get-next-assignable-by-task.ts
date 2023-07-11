@@ -56,10 +56,10 @@ export class GetNextAssignableByTaskUseCase {
       let aDate = new Date(0)
       let bDate = new Date(0)
 
-      if (a) {
+      if (a && a.date) {
         aDate = a.date
       }
-      if (b) {
+      if (b && b.date) {
         bDate = b.date
       }
       return aDate.getTime() - bDate.getTime()
@@ -77,10 +77,10 @@ export class GetNextAssignableByTaskUseCase {
       let aDate = new Date(0)
       let bDate = new Date(0)
 
-      if (a) {
+      if (a && a.date) {
         aDate = a.date
       }
-      if (b) {
+      if (b && b.date) {
         bDate = b.date
       }
       return aDate.getTime() - bDate.getTime()
