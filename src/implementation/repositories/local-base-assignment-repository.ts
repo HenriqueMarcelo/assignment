@@ -58,4 +58,30 @@ export class LocalBaseAssignmentRepository implements AssignmentRepository {
       taskId: '',
     })
   }
+
+  async getLastAssignmentByAssignableAndTask(
+    assignableId: string,
+    taskId: string,
+  ) {
+    const allAssignments = await this.list()
+    const allAssignmenetOfAssignable = allAssignments.filter(
+      (assignment) =>
+        assignment.assignableId === assignableId &&
+        assignment.taskId === taskId,
+    )
+
+    allAssignmenetOfAssignable.sort((a, b) => {
+      return a.date.getTime() - b.date.getTime()
+    })
+
+    if (allAssignmenetOfAssignable.slice(-1)[0]) {
+      return allAssignmenetOfAssignable.slice(-1)[0]
+    }
+
+    return Assignment.create({
+      assignableId,
+      date: null as unknown as Date,
+      taskId,
+    })
+  }
 }

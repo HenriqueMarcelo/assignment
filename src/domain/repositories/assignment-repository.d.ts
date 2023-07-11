@@ -8,4 +8,8 @@ export interface AssignmentRepository {
   save(assignment: Assignment): Promise<void>
 
   getLastAssignmentOfAssignable(assignableId: string): Promise<Assignment>
+  getLastAssignmentByAssignableAndTask(
+    assignableId: string,
+    taskId: string,
+  ): Promise<Assignment>
 }
