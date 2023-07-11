@@ -1,3 +1,4 @@
+import { getDateFromAssignment } from '@/util/get-date-from-assignment'
 import { Assignment } from '../entities/Assignment'
 import { AssignableRepository } from '../repositories/assignable-repository'
 import { AssignmentRepository } from '../repositories/assignment-repository'
@@ -54,15 +55,8 @@ export class GetNextAssignableByTaskUseCase {
     )
 
     const sortWhoMustBeTheNextOne = (a: Assignment, b: Assignment) => {
-      let aDate = new Date(0)
-      let bDate = new Date(0)
-
-      if (a && a.date) {
-        aDate = a.date
-      }
-      if (b && b.date) {
-        bDate = b.date
-      }
+      const aDate = getDateFromAssignment(a)
+      const bDate = getDateFromAssignment(b)
 
       const dateDiff = aDate.getTime() - bDate.getTime()
 
